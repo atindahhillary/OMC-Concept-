@@ -2,7 +2,7 @@
 
 A live-tracked registry of the data gaps in Africa and Kenya's carbon markets, benchmarked against the [One Mara Carbon Project](https://onemaracarbon.org/) (OMCP) — a real soil-carbon and grazing-management project across Maasai Mara conservancies.
 
-**Live site:** _deployed on Vercel — see the link pinned in this repo's description / the badge below once deployed._
+**Live site:** https://carbon-data-gap-observatory.vercel.app
 
 ## What this is
 
