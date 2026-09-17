@@ -20,8 +20,10 @@
       <span class="brand-name">Carbon Data Gap Observatory</span>
     </div>
     <nav class="site-nav">
+      <a href="#dashboard">Dashboard</a>
       <a href="#context">Market context</a>
       <a href="#omcp">OMCP case study</a>
+      <a href="#story">Mara story</a>
       <a href="#registry">Data gap registry</a>
       <a href="#signals">Community signals</a>
       <a href="#methodology">Sources</a>
@@ -52,6 +54,41 @@
       <div class="stat-cell"><div class="stat-value" id="stat-critical-gaps">&mdash;</div><div class="stat-label">Critical severity</div></div>
       <div class="stat-cell"><div class="stat-value" id="stat-improving-gaps">&mdash;</div><div class="stat-label">Improving or partially resolved</div></div>
       <div class="stat-cell"><div class="stat-value" id="stat-open-gaps">&mdash;</div><div class="stat-label">Still fully open</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="dashboard">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Live dashboard</span>
+      <h2>The registry, visualised</h2>
+      <p>Computed live from the same database as the registry below &mdash; refresh this page and these move with it.</p>
+    </div>
+    <div class="dashboard-grid">
+      <div class="chart-card">
+        <h3>Resolution progress</h3>
+        <div class="chart-sub">Share of tracked gaps by current status</div>
+        <div id="meter-resolution" class="meter-wrap"></div>
+      </div>
+      <div class="chart-card">
+        <h3>By severity</h3>
+        <div class="chart-sub">How many tracked gaps at each severity</div>
+        <div id="chart-severity"></div>
+        <div id="table-severity"></div>
+      </div>
+      <div class="chart-card span-2">
+        <h3>Status breakdown</h3>
+        <div class="chart-sub">Open &rarr; improving &rarr; partially resolved &rarr; resolved, as a share of all tracked gaps</div>
+        <div id="chart-resolution" class="stack-bar"></div>
+        <div id="chart-resolution-legend" class="stack-legend"></div>
+      </div>
+      <div class="chart-card span-2">
+        <h3>By category</h3>
+        <div class="chart-sub">Which part of the market each gap sits in</div>
+        <div id="chart-category"></div>
+        <div id="table-category"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -132,6 +169,93 @@
           <li><span class="mark no">&#10007;</span> No visible link to a specific registry listing / credit serial numbers</li>
           <li><span class="mark no">&#10007;</span> No published benefit-sharing percentage or revenue split</li>
         </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="story">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">The place behind the data</span>
+      <h2>Why the Mara is worth this much care</h2>
+      <p>Every gap tracked above is ultimately about this landscape and the people and wildlife who depend on it.</p>
+    </div>
+
+    <div class="story-block">
+      <figure class="story-media">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mara_River_Massai_Mara.jpg?width=900" alt="Aerial view of the Mara River winding through open savanna grassland in the Maasai Mara, Kenya" loading="lazy">
+        <figcaption>The Mara River cutting through the savanna. Photo: Morris P&uuml;gner, public domain, via Wikimedia Commons.</figcaption>
+      </figure>
+      <div class="story-text">
+        <h3>A grassland that runs on rain, rivers, and rotation</h3>
+        <p>
+          The Maasai Mara is the northern end of the wider Serengeti-Mara ecosystem, one continuous
+          savanna straddling Kenya and Tanzania. Its grass is the whole system's fuel: it feeds
+          the migration, it feeds Maasai cattle, and when it is grazed and rested in the right
+          rhythm, its soil quietly pulls carbon down and holds it. Get the rotation wrong &mdash;
+          too many cattle, too long, in one place &mdash; and the same grassland degrades, the soil
+          carbon that took years to build releases, and wildlife corridors start to close. That
+          single mechanism, grazing management, is the entire premise behind OMCP's carbon credits
+          and behind most of the data gaps this observatory tracks: everything downstream depends
+          on measuring this one process correctly.
+        </p>
+      </div>
+    </div>
+
+    <div class="story-block reverse">
+      <figure class="story-media">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Western_white-bearded_wildebeest_(Connochaetes_taurinus_mearnsi)_Mara_River_crossing_2b.jpg?width=900" alt="Wildebeest and zebra crossing the Mara River during the Great Migration" loading="lazy">
+        <figcaption>Wildebeest and zebra crossing the Mara River during the Great Migration. Photo: Charles J. Sharp, CC BY-SA 4.0, via Wikimedia Commons.</figcaption>
+      </figure>
+      <div class="story-text">
+        <h3>Two million animals moving through one carbon ledger</h3>
+        <p>
+          Roughly 1.5 million wildebeest, alongside hundreds of thousands of zebra and gazelle,
+          follow the rains in an annual circuit between the Serengeti and the Mara. That migration
+          is also a slow-motion pressure test on the grassland OMCP is trying to protect: it grazes
+          the same soils the project measures for carbon, and it depends on the same intact
+          corridors between conservancies. A data gap in one is rarely isolated from the other &mdash;
+          a wildlife corridor cut off by unplanned settlement or fencing shows up, eventually, as a
+          soil carbon number that does not add up.
+        </p>
+      </div>
+    </div>
+
+    <div class="story-block">
+      <figure class="story-media">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bejewelled_Masai_woman_(48061106487).jpg?width=900" alt="Maasai woman in traditional beaded jewellery, Amboseli area, Kenya" loading="lazy">
+        <figcaption>Maasai beadwork, a marker of community and status carried into every conservancy meeting. Photo: Kandukuru Nagarjun, CC BY 2.0, via Wikimedia Commons.</figcaption>
+      </figure>
+      <div class="story-text">
+        <h3>The people this market is supposed to pay</h3>
+        <p>
+          Maasai pastoralists have grazed these plains for generations under systems of shared,
+          rotational land use that predate any carbon standard. Carbon finance only works here if
+          it pays landowners and conservancies enough, visibly enough, to keep choosing rotational
+          grazing over subdividing and fencing land for other uses. That is exactly why the
+          benefit-sharing disclosure gap tracked above matters so much: without a public, comparable
+          record of what communities actually receive, there is no way to tell whether carbon
+          revenue is holding this system together or just extracting from it.
+        </p>
+      </div>
+    </div>
+
+    <div class="story-block reverse">
+      <figure class="story-media">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/African_Bush_Elephants,_Maasai_Mara_(30502862557).jpg?width=900" alt="A family of African bush elephants walking through tall grass in the Maasai Mara" loading="lazy">
+        <figcaption>An elephant family moving through Mara grassland. Photo: Ray in Manila, CC BY 2.0, via Wikimedia Commons.</figcaption>
+      </figure>
+      <div class="story-text">
+        <h3>Biodiversity as the hardest number to fake</h3>
+        <p>
+          Elephants, lions, and topi need connected, healthy habitat, not just a favourable carbon
+          balance on paper. That is why biodiversity and co-benefit claims are simultaneously the
+          most emotionally compelling part of any carbon project's story and the hardest to verify
+          from a spreadsheet. A restored grazing corridor either supports these populations or it
+          doesn't &mdash; which is precisely the kind of ground-truth that the co-benefit reporting
+          gap above says the market still cannot compare consistently across projects.
+        </p>
       </div>
     </div>
   </div>
@@ -253,6 +377,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js" integrity="sha384-iLddHTLokph6Omwoyid4XKxHaWa6w41BnoEj0q5oOrzmYPpHIKt1wyjReA7s//pP" crossorigin="anonymous"></script>
 <script src="js/config.js"></script>
+<script src="js/charts.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

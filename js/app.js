@@ -166,7 +166,55 @@
         renderSeverityFilters();
         renderSummaryStats();
         renderGaps();
+        renderDashboard();
       });
+  }
+
+  var SEVERITY_COLORS = { critical: 'var(--critical)', high: 'var(--high)', medium: 'var(--medium)', low: 'var(--low)' };
+  var SEVERITY_ORDER = ['critical', 'high', 'medium', 'low'];
+  var RESOLVE_COLORS = {
+    open: 'var(--resolve-open)',
+    improving: 'var(--resolve-improving)',
+    partially_resolved: 'var(--resolve-partial)',
+    resolved: 'var(--resolve-resolved)'
+  };
+  var RESOLVE_ORDER = ['open', 'improving', 'partially_resolved', 'resolved'];
+
+  function renderDashboard() {
+    if (!window.OMC_CHARTS || !allGaps.length) return;
+
+    var severityCounts = {};
+    var categoryCounts = {};
+    var statusCounts = {};
+    allGaps.forEach(function (g) {
+      severityCounts[g.severity] = (severityCounts[g.severity] || 0) + 1;
+      categoryCounts[g.category] = (categoryCounts[g.category] || 0) + 1;
+      statusCounts[g.status] = (statusCounts[g.status] || 0) + 1;
+    });
+
+    OMC_CHARTS.renderBarChart(
+      'chart-severity',
+      SEVERITY_ORDER.filter(function (s) { return severityCounts[s]; }).map(function (s) {
+        return { label: s.charAt(0).toUpperCase() + s.slice(1), value: severityCounts[s] || 0, color: SEVERITY_COLORS[s] };
+      }),
+      { tableId: 'table-severity', tableHeader: 'Severity', unit: ' gaps' }
+    );
+
+    var categoryRows = Object.keys(categoryCounts)
+      .map(function (c) { return { label: CATEGORY_LABELS[c] || c, value: categoryCounts[c], color: 'var(--accent)' }; })
+      .sort(function (a, b) { return b.value - a.value; });
+    OMC_CHARTS.renderBarChart('chart-category', categoryRows, { tableId: 'table-category', tableHeader: 'Category', unit: ' gaps' });
+
+    OMC_CHARTS.renderStackedProgress(
+      'chart-resolution',
+      'chart-resolution-legend',
+      RESOLVE_ORDER.map(function (s) {
+        return { label: STATUS_LABELS[s], value: statusCounts[s] || 0, color: RESOLVE_COLORS[s] };
+      })
+    );
+
+    var resolvedish = (statusCounts.improving || 0) + (statusCounts.partially_resolved || 0) + (statusCounts.resolved || 0);
+    OMC_CHARTS.renderMeter('meter-resolution', resolvedish, allGaps.length, 'of tracked gaps improving or resolved');
   }
 
   function submissionCardHtml(s) {
