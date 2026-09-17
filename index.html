@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carbon Data Gap Observatory — Kenya &amp; Africa</title>
+<meta name="description" content="A live-tracked registry of the data gaps in Africa and Kenya's carbon markets, benchmarked against the One Mara Carbon Project.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <span class="brand-mark">OMC&middot;DGO</span>
+      <span class="brand-name">Carbon Data Gap Observatory</span>
+    </div>
+    <nav class="site-nav">
+      <a href="#context">Market context</a>
+      <a href="#omcp">OMCP case study</a>
+      <a href="#registry">Data gap registry</a>
+      <a href="#signals">Community signals</a>
+      <a href="#methodology">Sources</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="hero-eyebrow">Independent research prototype &middot; not affiliated with OMCP</span>
+    <h1>Tracking the data gaps behind Africa and Kenya's carbon markets</h1>
+    <p class="lead">
+      The <a href="https://onemaracarbon.org/" target="_blank" rel="noopener noreferrer">One Mara Carbon Project</a>
+      publishes real removal, area, and livelihood figures for its Maasai Mara soil-carbon work &mdash;
+      more than most projects on the continent disclose. This observatory uses that project as a benchmark
+      to surface the data gaps still standing between Africa's carbon markets and a trustworthy, comparable,
+      continuously verifiable market: fragmented registries, thin MRV capacity, opaque pricing, and inconsistent
+      benefit-sharing disclosure.
+    </p>
+    <div class="hero-meta">
+      <span>Registry last reviewed: <strong id="hero-date">17 Sep 2026</strong></span>
+      <a href="#methodology">Methodology &amp; sources &rarr;</a>
+      <a href="https://onemaracarbon.org/" target="_blank" rel="noopener noreferrer">onemaracarbon.org &#8599;</a>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-cell"><div class="stat-value" id="stat-total-gaps">&mdash;</div><div class="stat-label">Tracked data gaps</div></div>
+      <div class="stat-cell"><div class="stat-value" id="stat-critical-gaps">&mdash;</div><div class="stat-label">Critical severity</div></div>
+      <div class="stat-cell"><div class="stat-value" id="stat-improving-gaps">&mdash;</div><div class="stat-label">Improving or partially resolved</div></div>
+      <div class="stat-cell"><div class="stat-value" id="stat-open-gaps">&mdash;</div><div class="stat-label">Still fully open</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="context">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Market context</span>
+      <h2>What the numbers say about Africa and Kenya today</h2>
+      <p>Headline figures cited across the registry below, each traceable to a named source.</p>
+    </div>
+    <div class="fact-grid">
+      <div class="fact-card">
+        <div class="fact-value">2,000+ / 300M</div>
+        <div class="fact-label">African projects that have issued credits, totalling roughly 300 million credits issued (~$2.2B), 66.5% via Verra and 33.5% via Gold Standard.</div>
+        <div class="fact-source"><a href="https://worldmetrics.org/carbon-credits-statistics/" target="_blank" rel="noopener noreferrer">WorldMetrics, Carbon Credits Statistics 2026</a></div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-value">70% live</div>
+        <div class="fact-label">Kenya National Carbon Registry (KNCR), launched 17 Feb 2026, reported operational; full integration targeted for December 2026.</div>
+        <div class="fact-source"><a href="https://www.capitalfm.co.ke/news/2026/02/kenya-launches-national-carbon-registry-carbon-markets/" target="_blank" rel="noopener noreferrer">Capital FM Kenya</a></div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-value">&euro;12&ndash;&euro;1,000+/t</div>
+        <div class="fact-label">Range of prices paid per tonne in the voluntary market depending on methodology and buyer, with no public price-discovery feed for African-origin credits.</div>
+        <div class="fact-source"><a href="https://www.senken.io/academy/understanding-carbon-markets/carbon-credit-price" target="_blank" rel="noopener noreferrer">Senken, Carbon Credit Prices 2026</a></div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-value">~19x by 2030</div>
+        <div class="fact-label">Modeled scale-up projected for Africa's carbon credit market by the Africa Carbon Markets Initiative, to roughly $6B in revenue and 30M jobs.</div>
+        <div class="fact-source"><a href="https://africacarbonmarkets.org/" target="_blank" rel="noopener noreferrer">Africa Carbon Markets Initiative</a></div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-value">50&ndash;80%</div>
+        <div class="fact-label">Spread in the share of carbon revenue different standards route to communities/landowners (Zimbabwe minimum, Plan Vivo, Ghana REDD+, Acorn Framework) with no common disclosure format.</div>
+        <div class="fact-source"><a href="https://fsdafrica.org/wp-content/uploads/2025/05/CAP-A-Benefit-Sharing-Report-23.08.24_FINAL.pdf" target="_blank" rel="noopener noreferrer">FSD Africa, Benefit Sharing Report</a></div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-value">2027</div>
+        <div class="fact-label">Target year for Kenya's planned national carbon exchange, intended to give the country its first transparent trading venue.</div>
+        <div class="fact-source"><a href="https://carboncredits.com/kenya-carbon-exchange-africa-carbon-trading-2027/" target="_blank" rel="noopener noreferrer">CarbonCredits.com</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="omcp">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Benchmark project</span>
+      <h2>One Mara Carbon Project: what good disclosure looks like, and where gaps remain even here</h2>
+      <p>Figures below are drawn directly from <a href="https://onemaracarbon.org/" target="_blank" rel="noopener noreferrer">onemaracarbon.org</a> as published at time of review.</p>
+    </div>
+    <div class="omcp-card">
+      <div>
+        <h3>Published on the public site</h3>
+        <p style="color:var(--ink-soft);font-size:14px;">
+          OMCP is a soil-carbon and rotational-grazing project across Maasai Mara conservancies, run by
+          OMCP Mara Carbon CLG with MMWCA, Conservation International, and Ahueni. It publishes a Project
+          Design Document, an MRV report, and Maa-language summaries of both &mdash; a level of public
+          documentation still uncommon among African carbon projects.
+        </p>
+        <div class="omcp-stats">
+          <div><div class="v">3,855,408 tCO&#8322;e</div><div class="l">Net estimated removals, project area</div></div>
+          <div><div class="v">127,717 tCO&#8322;e/yr</div><div class="l">Estimated annual emission reductions</div></div>
+          <div><div class="v">180,668 ha</div><div class="l">Non-forest land under improved management</div></div>
+          <div><div class="v">16,669 people</div><div class="l">Expected improved livelihoods</div></div>
+        </div>
+      </div>
+      <div>
+        <h3>Transparency checklist</h3>
+        <ul class="checklist">
+          <li><span class="mark yes">&#10003;</span> Project Design Document and MRV report public</li>
+          <li><span class="mark yes">&#10003;</span> Community-language (Maa) summaries published</li>
+          <li><span class="mark yes">&#10003;</span> Named implementation partners disclosed</li>
+          <li><span class="mark yes">&#10003;</span> Formal grievance &amp; feedback process published</li>
+          <li><span class="mark no">&#10007;</span> No public price-per-credit or per-buyer disclosure found</li>
+          <li><span class="mark no">&#10007;</span> No visible link to a specific registry listing / credit serial numbers</li>
+          <li><span class="mark no">&#10007;</span> No published benefit-sharing percentage or revenue split</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="registry">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Live registry</span>
+      <h2>Data gap tracker</h2>
+      <p>Read live from the observatory's database. Each entry cites a named, dated source and a status you can watch change over time.</p>
+    </div>
+    <div class="filter-row" id="category-filters"></div>
+    <div class="filter-row" id="severity-filters"></div>
+    <div class="gap-count" id="gap-count">Loading&hellip;</div>
+    <div class="gap-grid" id="gap-grid"></div>
+    <p class="gap-empty" id="gap-empty" style="display:none;color:var(--ink-soft);">No gaps match this filter.</p>
+  </div>
+</section>
+
+<section class="block" id="signals">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Crowdsourced</span>
+      <h2>Community signals</h2>
+      <p>Flag a data gap you've personally run into &mdash; as a developer, buyer, researcher, or community member. Submissions post immediately, labelled pending review.</p>
+    </div>
+    <div class="signals-layout">
+      <div>
+        <div class="signal-list" id="signal-list"><p class="signal-empty">Loading&hellip;</p></div>
+      </div>
+      <div>
+        <form id="signal-form">
+          <div class="field">
+            <label for="f-title">Title</label>
+            <input id="f-title" name="title" type="text" maxlength="140" required>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="f-category">Category</label>
+              <select id="f-category" name="category" required>
+                <option value="registry_fragmentation">Registry fragmentation</option>
+                <option value="mrv_capacity">MRV &amp; verification capacity</option>
+                <option value="price_transparency">Price transparency</option>
+                <option value="benefit_sharing">Benefit-sharing disclosure</option>
+                <option value="land_tenure">Land tenure &amp; consent</option>
+                <option value="market_data">Market &amp; transaction data</option>
+                <option value="cobenefit_data">Co-benefit / SDG data</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-geography">Geography</label>
+              <input id="f-geography" name="geography" type="text" maxlength="80" placeholder="e.g. Narok County, Kenya" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-description">What's the gap?</label>
+            <textarea id="f-description" name="description" maxlength="800" required></textarea>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="f-source">Reference link (optional)</label>
+              <input id="f-source" name="source_url" type="url" placeholder="https://">
+            </div>
+            <div class="field">
+              <label for="f-name">Your name (optional, shown publicly)</label>
+              <input id="f-name" name="submitter_name" type="text" maxlength="60">
+            </div>
+          </div>
+          <button type="submit" class="primary">Submit signal</button>
+          <div class="form-status" id="signal-form-status"></div>
+          <p class="form-note">Submissions are public and unmoderated on write; treat this as a public log, not a private report. For grievances about a specific project, use that project's own grievance channel &mdash; for OMCP, see <a href="https://onemaracarbon.org/" target="_blank" rel="noopener noreferrer">onemaracarbon.org</a>.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="methodology" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Methodology</span>
+      <h2>How this registry is built</h2>
+      <p>
+        Each curated entry in the data gap registry is drawn from a named, publicly accessible report, news
+        source, or peer-reviewed study, with a "last verified" date marking when the entry was checked against
+        that source. Severity is a qualitative editorial judgement (critical / high / medium / low) based on how
+        directly the gap undermines market integrity or community outcomes, not a standardised risk score.
+        Status tracks whether the underlying gap is open, improving, partially resolved, or resolved as public
+        information changes &mdash; Kenya's National Carbon Registry rollout is the clearest example of a gap
+        actively moving from open toward resolved. Community signals are separate, unverified, and shown as
+        submitted.
+      </p>
+    </div>
+    <ul class="source-list">
+      <li><a href="https://www.esi-africa.com/news/scaling-carbon-fight-data-standards-trust/" target="_blank" rel="noopener noreferrer">ESI Africa &mdash; Scaling carbon in Africa: data, standards and trust</a></li>
+      <li><a href="https://www.capitalfm.co.ke/news/2026/02/kenya-launches-national-carbon-registry-carbon-markets/" target="_blank" rel="noopener noreferrer">Capital FM Kenya &mdash; Kenya National Carbon Registry launch</a></li>
+      <li><a href="https://indepthresearch.org/blog/navigating-kenyas-new-national-carbon-registry/" target="_blank" rel="noopener noreferrer">Indepth Research Institute &mdash; Navigating Kenya's registry</a></li>
+      <li><a href="https://carboncredits.com/kenya-carbon-exchange-africa-carbon-trading-2027/" target="_blank" rel="noopener noreferrer">CarbonCredits.com &mdash; Kenya Carbon Exchange 2027</a></li>
+      <li><a href="https://www.ibanet.org/africa-carbon-credit-journey" target="_blank" rel="noopener noreferrer">International Bar Association &mdash; Africa's carbon credit journey</a></li>
+      <li><a href="https://link.springer.com/article/10.1007/s10584-024-03796-1" target="_blank" rel="noopener noreferrer">Springer Nature &mdash; Monitoring soil carbon in smallholder projects, Kenya</a></li>
+      <li><a href="https://www.senken.io/academy/understanding-carbon-markets/carbon-credit-price" target="_blank" rel="noopener noreferrer">Senken &mdash; Carbon credit prices in 2026</a></li>
+      <li><a href="https://fsdafrica.org/wp-content/uploads/2025/05/CAP-A-Benefit-Sharing-Report-23.08.24_FINAL.pdf" target="_blank" rel="noopener noreferrer">FSD Africa &mdash; Rethinking benefit sharing in African carbon projects</a></li>
+      <li><a href="https://africasustainabilitymatters.com/from-forest-to-ledger-embedding-customary-tenure-in-carbon-finance/" target="_blank" rel="noopener noreferrer">African Sustainability Matters &mdash; Customary tenure in carbon finance</a></li>
+      <li><a href="https://africacarbonmarkets.org/" target="_blank" rel="noopener noreferrer">Africa Carbon Markets Initiative</a></li>
+      <li><a href="https://worldmetrics.org/carbon-credits-statistics/" target="_blank" rel="noopener noreferrer">WorldMetrics &mdash; Carbon Credits Statistics 2026</a></li>
+      <li><a href="https://www.developmentaid.org/news-stream/post/198946/carbon-credits-in-africa" target="_blank" rel="noopener noreferrer">DevelopmentAid &mdash; Carbon credits in Africa</a></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; <span id="year"></span> Carbon Data Gap Observatory. Independent research prototype, not affiliated with or endorsed by OMCP.</span>
+    <span><a href="https://onemaracarbon.org/" target="_blank" rel="noopener noreferrer">onemaracarbon.org</a> &middot; <a href="https://github.com/atindahhillary/OMC-Concept-" target="_blank" rel="noopener noreferrer">Source on GitHub</a></span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js" integrity="sha384-iLddHTLokph6Omwoyid4XKxHaWa6w41BnoEj0q5oOrzmYPpHIKt1wyjReA7s//pP" crossorigin="anonymous"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
