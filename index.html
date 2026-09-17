@@ -31,6 +31,12 @@
   </div>
 </header>
 
+<div class="ticker-wrap" role="marquee" aria-label="Live carbon market indicators">
+  <div class="ticker-track" id="ticker-track">
+    <span class="ticker-item"><span class="dot"></span><span class="k">LOADING TICKER</span></span>
+  </div>
+</div>
+
 <section class="hero">
   <div class="wrap">
     <span class="hero-eyebrow">Independent research prototype &middot; not affiliated with OMCP</span>
@@ -61,7 +67,7 @@
 <section class="block" id="dashboard">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Live dashboard</span>
+      <span class="kicker"><span class="pulse-dot"></span>Live dashboard</span>
       <h2>The registry, visualised</h2>
       <p>Computed live from the same database as the registry below &mdash; refresh this page and these move with it.</p>
     </div>
@@ -130,6 +136,43 @@
         <div class="fact-value">2027</div>
         <div class="fact-label">Target year for Kenya's planned national carbon exchange, intended to give the country its first transparent trading venue.</div>
         <div class="fact-source"><a href="https://carboncredits.com/kenya-carbon-exchange-africa-carbon-trading-2027/" target="_blank" rel="noopener noreferrer">CarbonCredits.com</a></div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:44px;">
+      <span class="kicker"><span class="pulse-dot"></span>Market data, live</span>
+      <h3 style="font-size:19px;">The same figures, as charts</h3>
+      <p>Read live from the observatory's database (<code>market_indicators</code>), so these can be updated without a redeploy as new data lands.</p>
+    </div>
+    <div class="dashboard-grid">
+      <div class="chart-card">
+        <h3>Registry share</h3>
+        <div class="chart-sub">Share of issued African credits by registry</div>
+        <div id="chart-registry-split" class="stack-bar"></div>
+        <div id="chart-registry-split-legend" class="stack-legend"></div>
+      </div>
+      <div class="chart-card">
+        <h3>Kenya registry integration</h3>
+        <div class="chart-sub">Kenya National Carbon Registry (KNCR), toward full integration</div>
+        <div id="meter-kncr" class="meter-wrap"></div>
+      </div>
+      <div class="chart-card span-2">
+        <h3>Price spread, &euro;/tonne</h3>
+        <div class="chart-sub">Voluntary market price range vs. East Africa ARR average</div>
+        <div id="chart-price"></div>
+        <div id="table-price"></div>
+      </div>
+      <div class="chart-card span-2">
+        <h3>Community benefit share by framework</h3>
+        <div class="chart-sub">Share of carbon revenue routed to landowners/communities, by standard</div>
+        <div id="chart-benefit"></div>
+        <div id="table-benefit"></div>
+      </div>
+      <div class="chart-card span-2">
+        <h3>Projected market scale-up</h3>
+        <div class="chart-sub">ACMI projection, indexed to 2026 = 100 (never a dual-axis multiplier)</div>
+        <div id="chart-scaleup"></div>
+        <div id="table-scaleup"></div>
       </div>
     </div>
   </div>
@@ -264,7 +307,7 @@
 <section class="block" id="registry">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Live registry</span>
+      <span class="kicker"><span class="pulse-dot"></span>Live registry</span>
       <h2>Data gap tracker</h2>
       <p>Read live from the observatory's database. Each entry cites a named, dated source and a status you can watch change over time.</p>
     </div>
@@ -288,48 +331,16 @@
         <div class="signal-list" id="signal-list"><p class="signal-empty">Loading&hellip;</p></div>
       </div>
       <div>
-        <form id="signal-form">
-          <div class="field">
-            <label for="f-title">Title</label>
-            <input id="f-title" name="title" type="text" maxlength="140" required>
-          </div>
-          <div class="form-row">
-            <div class="field">
-              <label for="f-category">Category</label>
-              <select id="f-category" name="category" required>
-                <option value="registry_fragmentation">Registry fragmentation</option>
-                <option value="mrv_capacity">MRV &amp; verification capacity</option>
-                <option value="price_transparency">Price transparency</option>
-                <option value="benefit_sharing">Benefit-sharing disclosure</option>
-                <option value="land_tenure">Land tenure &amp; consent</option>
-                <option value="market_data">Market &amp; transaction data</option>
-                <option value="cobenefit_data">Co-benefit / SDG data</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="f-geography">Geography</label>
-              <input id="f-geography" name="geography" type="text" maxlength="80" placeholder="e.g. Narok County, Kenya" required>
-            </div>
-          </div>
-          <div class="field">
-            <label for="f-description">What's the gap?</label>
-            <textarea id="f-description" name="description" maxlength="800" required></textarea>
-          </div>
-          <div class="form-row">
-            <div class="field">
-              <label for="f-source">Reference link (optional)</label>
-              <input id="f-source" name="source_url" type="url" placeholder="https://">
-            </div>
-            <div class="field">
-              <label for="f-name">Your name (optional, shown publicly)</label>
-              <input id="f-name" name="submitter_name" type="text" maxlength="60">
-            </div>
-          </div>
-          <button type="submit" class="primary">Submit signal</button>
-          <div class="form-status" id="signal-form-status"></div>
+        <div class="chat-widget">
+          <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-label="Data gap intake chat"></div>
+          <div id="chat-quick-replies" class="chat-quick-replies"></div>
+          <form id="chat-input-form" class="chat-input-row">
+            <label for="chat-input" class="visually-hidden">Your answer</label>
+            <input id="chat-input" type="text" autocomplete="off" placeholder="Type your answer&hellip;">
+            <button type="submit" class="primary">Send</button>
+          </form>
           <p class="form-note">Submissions are public and unmoderated on write; treat this as a public log, not a private report. For grievances about a specific project, use that project's own grievance channel &mdash; for OMCP, see <a href="https://onemaracarbon.org/" target="_blank" rel="noopener noreferrer">onemaracarbon.org</a>.</p>
-        </form>
+        </div>
       </div>
     </div>
   </div>

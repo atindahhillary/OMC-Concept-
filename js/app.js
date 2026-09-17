@@ -167,7 +167,94 @@
         renderSummaryStats();
         renderGaps();
         renderDashboard();
+        renderTicker();
       });
+  }
+
+  var allMarketIndicators = [];
+
+  function groupBy(arr, key) {
+    var out = {};
+    arr.forEach(function (item) { (out[item[key]] = out[item[key]] || []).push(item); });
+    return out;
+  }
+
+  function loadMarketIndicators() {
+    if (!supabase) return;
+    supabase
+      .from('market_indicators')
+      .select('*')
+      .order('sort_order', { ascending: true })
+      .then(function (res) {
+        if (res.error || !res.data) return;
+        allMarketIndicators = res.data;
+        renderMarketCharts();
+        renderTicker();
+      });
+  }
+
+  function renderMarketCharts() {
+    if (!window.OMC_CHARTS || !allMarketIndicators.length) return;
+    var groups = groupBy(allMarketIndicators, 'chart_group');
+
+    if (groups.registry_split) {
+      var segs = groups.registry_split.map(function (r, i) {
+        return { label: r.label, value: r.value, color: i === 0 ? 'var(--accent)' : 'var(--amber)' };
+      });
+      OMC_CHARTS.renderStackedProgress('chart-registry-split', 'chart-registry-split-legend', segs);
+    }
+
+    if (groups.kncr_progress) {
+      var k = groups.kncr_progress[0];
+      OMC_CHARTS.renderMeter('meter-kncr', k.value, 100, k.label);
+    }
+
+    if (groups.price_range) {
+      OMC_CHARTS.renderBarChart(
+        'chart-price',
+        groups.price_range.map(function (r) { return { label: r.label, value: r.value, color: 'var(--accent)' }; }),
+        { tableId: 'table-price', tableHeader: 'Price point', unit: ' €/t' }
+      );
+    }
+
+    if (groups.benefit_share) {
+      OMC_CHARTS.renderBarChart(
+        'chart-benefit',
+        groups.benefit_share.map(function (r) { return { label: r.label, value: r.value, color: 'var(--accent)' }; }),
+        { tableId: 'table-benefit', tableHeader: 'Framework', unit: '%' }
+      );
+    }
+
+    if (groups.scaleup) {
+      OMC_CHARTS.renderBarChart(
+        'chart-scaleup',
+        groups.scaleup.map(function (r) { return { label: r.label, value: r.value, color: 'var(--accent)' }; }),
+        { tableId: 'table-scaleup', tableHeader: 'Period', unit: ' idx' }
+      );
+    }
+  }
+
+  function renderTicker() {
+    var track = document.getElementById('ticker-track');
+    if (!track || !allGaps.length || !allMarketIndicators.length) return;
+
+    var items = [];
+    items.push({ k: 'TRACKED DATA GAPS', v: String(allGaps.length) });
+    var critical = allGaps.filter(function (g) { return g.severity === 'critical'; }).length;
+    items.push({ k: 'CRITICAL SEVERITY', v: String(critical) });
+
+    var byGroup = groupBy(allMarketIndicators, 'chart_group');
+    if (byGroup.kncr_progress) items.push({ k: 'KNCR INTEGRATION', v: byGroup.kncr_progress[0].value + '%' });
+    var arrRow = byGroup.price_range && byGroup.price_range.filter(function (r) { return r.label.indexOf('East Africa') === 0; })[0];
+    if (arrRow) items.push({ k: 'EAST AFRICA ARR AVG', v: '€' + arrRow.value + '/t' });
+    var verraRow = byGroup.registry_split && byGroup.registry_split.filter(function (r) { return r.label === 'Verra'; })[0];
+    if (verraRow) items.push({ k: 'VERRA SHARE', v: verraRow.value + '%' });
+    items.push({ k: 'REGISTRY LAST REVIEWED', v: '17 SEP 2026' });
+
+    var html = items.map(function (it) {
+      return '<span class="ticker-item"><span class="dot"></span><span class="k">' + escapeHtml(it.k) + '</span> <span class="v">' + escapeHtml(it.v) + '</span></span>';
+    }).join('');
+    track.innerHTML = html + html;
   }
 
   var SEVERITY_COLORS = { critical: 'var(--critical)', high: 'var(--high)', medium: 'var(--medium)', low: 'var(--low)' };
@@ -249,49 +336,169 @@
       });
   }
 
-  function wireForm() {
-    var form = document.getElementById('signal-form');
-    if (!form) return;
-    var statusEl = document.getElementById('signal-form-status');
+  // ---------- community signal intake chatbot (rule-based, no AI) ----------
+
+  var CHAT_STEPS = [
+    { key: 'title', prompt: "Hi! I can help you flag a data gap you've run into. What should I call it? (a short title)" },
+    { key: 'category', prompt: 'Which category fits best?', quickReplies: Object.keys(CATEGORY_LABELS).map(function (k) { return { value: k, label: CATEGORY_LABELS[k] }; }) },
+    { key: 'geography', prompt: 'Where does this apply? (a county, country, or region)' },
+    { key: 'description', prompt: "Tell me more — what's missing, unclear, or hard to verify?" },
+    { key: 'source_url', prompt: 'Got a reference link? Paste it, or send "skip".', optional: true },
+    { key: 'submitter_name', prompt: 'Want to share your name? Type it, or send "skip".', optional: true }
+  ];
+
+  var chatState = { stepIndex: 0, answers: {}, awaitingConfirm: false };
+
+  function chatAppend(role, text) {
+    var log = document.getElementById('chat-log');
+    if (!log) return;
+    var div = document.createElement('div');
+    div.className = 'chat-msg ' + role;
+    div.textContent = text;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function chatClearQuickReplies() {
+    var wrap = document.getElementById('chat-quick-replies');
+    if (wrap) wrap.innerHTML = '';
+  }
+
+  function chatShowQuickReplies(options) {
+    var wrap = document.getElementById('chat-quick-replies');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    options.forEach(function (opt) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = opt.label;
+      btn.addEventListener('click', opt.onClick);
+      wrap.appendChild(btn);
+    });
+  }
+
+  function chatAskCurrentStep() {
+    chatClearQuickReplies();
+    if (chatState.stepIndex >= CHAT_STEPS.length) {
+      chatShowSummary();
+      return;
+    }
+    var step = CHAT_STEPS[chatState.stepIndex];
+    chatAppend('bot', step.prompt);
+    if (step.quickReplies) {
+      chatShowQuickReplies(step.quickReplies.map(function (o) {
+        return { label: o.label, onClick: function () { chatHandleAnswer(o.label, o.value); } };
+      }));
+    }
+  }
+
+  function chatHandleAnswer(displayText, rawValue) {
+    var step = CHAT_STEPS[chatState.stepIndex];
+    var value = rawValue !== undefined ? rawValue : displayText;
+    if (!step.optional && !String(value).trim()) {
+      chatAppend('bot', 'I need something there — mind trying again?');
+      return;
+    }
+    if (step.optional && /^skip$/i.test(String(value).trim())) value = '';
+    chatAppend('user', displayText);
+    chatState.answers[step.key] = String(value).trim();
+    chatState.stepIndex++;
+    chatAskCurrentStep();
+  }
+
+  function chatShowSummary() {
+    var a = chatState.answers;
+    chatAppend('bot', 'Here’s what I’ve got: "' + a.title + '" (' + (CATEGORY_LABELS[a.category] || a.category) + ', ' + a.geography + '). Want me to submit it?');
+    chatState.awaitingConfirm = true;
+    chatShowQuickReplies([
+      { label: 'Yes, submit it', onClick: chatConfirmSubmit },
+      { label: 'Start over', onClick: chatRestart }
+    ]);
+  }
+
+  function chatConfirmSubmit() {
+    chatState.awaitingConfirm = false;
+    chatClearQuickReplies();
+    chatSubmit();
+  }
+
+  function chatSubmit() {
+    if (!supabase) {
+      chatAppend('bot', 'Submission is unavailable right now — the database connection did not load.');
+      return;
+    }
+    var a = chatState.answers;
+    var payload = {
+      title: a.title,
+      category: a.category,
+      geography: a.geography,
+      description: a.description,
+      source_url: a.source_url || null,
+      submitter_name: a.submitter_name || null
+    };
+    chatAppend('bot', 'Submitting…');
+    supabase.from('gap_submissions').insert(payload).then(function (res) {
+      if (res.error) {
+        chatAppend('bot', 'Could not submit: ' + res.error.message);
+        return;
+      }
+      chatAppend('bot', 'Thanks — your signal is live in the log to the left, flagged as pending review. Flag another?');
+      chatShowQuickReplies([{ label: 'Flag another gap', onClick: chatRestart }]);
+      loadSubmissions();
+    });
+  }
+
+  function chatRestart() {
+    chatState = { stepIndex: 0, answers: {}, awaitingConfirm: false };
+    var log = document.getElementById('chat-log');
+    if (log) log.innerHTML = '';
+    chatAskCurrentStep();
+  }
+
+  function initChatbot() {
+    var form = document.getElementById('chat-input-form');
+    var input = document.getElementById('chat-input');
+    if (!form || !input) return;
+
+    chatAskCurrentStep();
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (!supabase) {
-        if (statusEl) statusEl.textContent = 'Submission is unavailable right now — the database connection did not load.';
+      var text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+
+      if (chatState.awaitingConfirm) {
+        chatAppend('user', text);
+        if (/^(y|yes|submit|confirm)/i.test(text)) {
+          chatConfirmSubmit();
+        } else {
+          chatAppend('bot', 'Use a button above to confirm or start over — or type "yes" to submit.');
+        }
         return;
       }
-      var payload = {
-        title: form.title.value.trim(),
-        category: form.category.value,
-        geography: form.geography.value.trim(),
-        description: form.description.value.trim(),
-        source_url: form.source_url.value.trim() || null,
-        submitter_name: form.submitter_name.value.trim() || null
-      };
-      if (!payload.title || !payload.geography || !payload.description) {
-        if (statusEl) statusEl.textContent = 'Please fill in title, geography, and description.';
-        return;
-      }
-      var btn = form.querySelector('button[type="submit"]');
-      if (btn) btn.disabled = true;
-      if (statusEl) statusEl.textContent = 'Submitting...';
-      supabase.from('gap_submissions').insert(payload).then(function (res) {
-        if (btn) btn.disabled = false;
-        if (res.error) {
-          if (statusEl) statusEl.textContent = 'Could not submit: ' + res.error.message;
+
+      var step = CHAT_STEPS[chatState.stepIndex];
+      if (step && step.quickReplies) {
+        var match = step.quickReplies.filter(function (o) { return o.label.toLowerCase() === text.toLowerCase(); })[0];
+        if (!match) {
+          chatAppend('user', text);
+          chatAppend('bot', 'Pick one of the categories above, or type its name exactly.');
           return;
         }
-        if (statusEl) statusEl.textContent = 'Thank you — your signal is live below, flagged as pending review.';
-        form.reset();
-        loadSubmissions();
-      });
+        chatHandleAnswer(match.label, match.value);
+        return;
+      }
+      chatHandleAnswer(text);
     });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     supabase = initClient();
     loadGaps();
+    loadMarketIndicators();
     loadSubmissions();
-    wireForm();
+    initChatbot();
 
     var yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
